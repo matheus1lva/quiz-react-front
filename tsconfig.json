@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "outDir": "./dist/",
+      "noImplicitAny": true,
+      "module": "esnext",
+      "target": "es5",
+      "lib": [
+        "dom",
+        "dom.iterable",
+        "es2015"
+      ],
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "moduleResolution": "node",
+      "jsx": "react",
+      "allowJs": true
+    }
+  }
