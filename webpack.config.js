@@ -3,7 +3,6 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const { WebpackPluginServe: Serve } = require('webpack-plugin-serve');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 const outputPath = resolve(__dirname, 'dist');
@@ -11,7 +10,9 @@ const outputPath = resolve(__dirname, 'dist');
 const entry = isDev ? ['./src/index.tsx', 'webpack-plugin-serve/client'] : './src/index.tsx';
 
 const plugins = [
-  new HtmlWebpackPlugin(),
+  new HtmlWebpackPlugin({
+    title: "The trivia game!"
+  }),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
@@ -25,11 +26,6 @@ if (isDev) {
     historyFallback: true,
     static: [outputPath]
   }));
-} else {
-  plugins.push(new MiniCssExtractPlugin({
-    filename: '[name].[contenthash].css',
-    chunkFilename: '[id].[contenthash].css'
-   }))
 }
 
 module.exports = {
@@ -48,10 +44,6 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
-        use: !isDev ? [MiniCssExtractPlugin.loader, 'css-loader'] : ['style-loader', 'css-loader']
       },
       {
         test: /\.(jpe?g|png|gif|svg|pdf|csv|xlsx|ttf|woff(2)?)$/i,
