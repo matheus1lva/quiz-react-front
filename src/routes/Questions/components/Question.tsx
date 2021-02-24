@@ -1,9 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { decode } from "html-entities";
 
 const QuestionBlock = styled.div`
   border: 1px solid red;
   padding: 50px;
+  font-size: 25px;
+`;
+
+const Body = styled.div`
+  width: 400px;
 `;
 
 export interface QuestionProps {
@@ -15,11 +21,11 @@ export interface QuestionProps {
 }
 
 export function Question(props: QuestionProps) {
-  const { category, type, difficulty, question, correctAnswer } = props;
+  const { category, question } = props;
   return (
-    <div>
+    <Body>
       <h1>Category: {category}</h1>
-      <QuestionBlock>{question}</QuestionBlock>
-    </div>
+      <QuestionBlock>{decode(question)}</QuestionBlock>
+    </Body>
   );
 }

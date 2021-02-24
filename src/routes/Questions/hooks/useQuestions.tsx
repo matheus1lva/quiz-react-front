@@ -8,10 +8,16 @@ export interface QuestionDefinition {
   type: "boolean";
   difficulty: string;
   question: string;
-  correct_answer: string[];
+  correct_answer: string;
 }
 
-export function useQuestions() {
+export interface UseQuestionResult {
+  isLoading?: boolean;
+  error?: Record<string, any>;
+  data: QuestionDefinition[];
+}
+
+export function useQuestions(): UseQuestionResult {
   const { isLoading, error, data } = useQuery("triviaQuestions", async () => {
     const request = await fetch(ENDPOINT_QUERIES);
     const response = await request.json();
