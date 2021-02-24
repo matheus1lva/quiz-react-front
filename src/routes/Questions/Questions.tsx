@@ -7,6 +7,12 @@ const QuestionWrapper = styled.div`
   display: flex;
   justify-items: center;
   align-items: center;
+  flex-direction: column;
+`;
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-items: space-between;
 `;
 
 export const Questions = () => {
@@ -31,9 +37,11 @@ export const Questions = () => {
         question={data[currentQuestion].question}
         type={data[currentQuestion].type}
       />
-      <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>
-        go to next
-      </button>
+      <ButtonsWrapper>
+        <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>
+          go to next
+        </button>
+      </ButtonsWrapper>
     </QuestionWrapper>
   );
 };
