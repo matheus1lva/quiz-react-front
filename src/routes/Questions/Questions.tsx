@@ -26,6 +26,8 @@ export function Questions() {
     currentQuestion?.correct_answer.toLowerCase() ?? "false";
   const dispatch = useDispatch();
 
+  const isLastStep = current === data.length - 1;
+
   const addCorrect = React.useCallback(() => {
     dispatch(addCorrectAnswer(currentQuestion));
   }, [currentQuestion]);
@@ -35,8 +37,11 @@ export function Questions() {
   }, [currentQuestion]);
 
   const moveToNext = () => {
-    if (data && current <= data.length) {
+    if (data && current < data.length - 1) {
       setCurrent(current + 1);
+    }
+    if(isLastStep) {
+      // do the 
     }
   };
 
@@ -49,7 +54,6 @@ export function Questions() {
   }
 
   const submitAnswer = (answer: string) => {
-    console.log("CORRECT,ANSWER", correctAnswer);
     if (answer === correctAnswer) {
       addCorrect();
     } else {
@@ -61,7 +65,6 @@ export function Questions() {
   return (
     <QuestionWrapper>
       <Question
-        key={currentQuestion.question}
         category={currentQuestion.category}
         correctAnswer={correctAnswer}
         difficulty={currentQuestion.difficulty}
