@@ -8,18 +8,23 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 
+import store from "./store";
+import { Provider } from "react-redux";
+
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <GlobalStyles />
-        <Layout>
-          <Switch>
-            <Route exact path="/" component={Questions} />
-          </Switch>
-        </Layout>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <GlobalStyles />
+          <Layout>
+            <Switch>
+              <Route exact path="/" component={Questions} />
+            </Switch>
+          </Layout>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </Provider>
   );
 };
 

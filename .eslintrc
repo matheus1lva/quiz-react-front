@@ -99,10 +99,6 @@
     "import/prefer-default-export": "off",
     "class-methods-use-this": "off",
     "function-paren-newline": "off",
-    "comma-dangle": [
-      "error",
-      "never"
-    ],
     "consistent-return": "error",
     "no-param-reassign": "off",
     "no-void": "error",
