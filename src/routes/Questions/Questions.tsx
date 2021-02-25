@@ -1,9 +1,18 @@
 import React from "react";
 import { Question } from "./components/Question";
-import { useQuestions } from "./hooks/useQuestions";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { addCorrectAnswer, addWrongAnswer } from "../../reducers";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addCorrectAnswer,
+  addWrongAnswer,
+  fetchQuestions,
+} from "../../reducers";
+import { RootState } from "../../store";
+import { useHistory } from "react-router-dom";
+import { SCORE_PATH } from "../../constants";
+import { QuestionDefinition } from "./hooks/useQuestions";
+import { Button } from "reakit";
+import { Loading } from "../../components/Loading/Loading";
 
 const QuestionWrapper = styled.div`
   display: flex;
@@ -16,20 +25,35 @@ const QuestionWrapper = styled.div`
 const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
+  width: 100%;
 `;
 
 export function Questions() {
-  const { isLoading, data, error } = useQuestions();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  React.useEffect(() => {
+    dispatch(fetchQuestions());
+  }, []);
+
+  const isLoading = useSelector(
+    (state: RootState) => state.questions.isLoading
+  );
+  const data = useSelector((state: RootState) => state.questions.resource);
+  const error = useSelector((state: RootState) => state.questions.error);
+
   const [current, setCurrent] = React.useState(0);
-  const currentQuestion = data ? data[current] : null;
+  const currentQuestion: QuestionDefinition | null = data
+    ? data[current]
+    : null;
   const correctAnswer =
     currentQuestion?.correct_answer.toLowerCase() ?? "false";
-  const dispatch = useDispatch();
 
-  const isLastStep = current === data.length - 1;
+  const isLastStep = data ? current === data.length - 1 : false;
 
   const addCorrect = React.useCallback(() => {
-    dispatch(addCorrectAnswer(currentQuestion));
+    dispatch(addCorrectAnswer(currentQuestion?.question));
   }, [currentQuestion]);
 
   const addWrong = React.useCallback(() => {
@@ -40,8 +64,8 @@ export function Questions() {
     if (data && current < data.length - 1) {
       setCurrent(current + 1);
     }
-    if(isLastStep) {
-      // do the 
+    if (isLastStep) {
+      history.push(SCORE_PATH);
     }
   };
 
@@ -50,7 +74,7 @@ export function Questions() {
   }
 
   if (isLoading) {
-    return <p>loading ...</p>;
+    return <Loading />;
   }
 
   const submitAnswer = (answer: string) => {
@@ -65,15 +89,15 @@ export function Questions() {
   return (
     <QuestionWrapper>
       <Question
-        category={currentQuestion.category}
+        category={currentQuestion?.category}
         correctAnswer={correctAnswer}
-        difficulty={currentQuestion.difficulty}
-        question={currentQuestion.question}
-        type={currentQuestion.type}
+        difficulty={currentQuestion?.difficulty}
+        question={currentQuestion?.question}
+        type={currentQuestion?.type}
       />
       <ButtonsWrapper>
-        <button onClick={() => submitAnswer("true")}>True</button>
-        <button onClick={() => submitAnswer("false")}>False</button>
+        <Button onClick={() => submitAnswer("true")}>True</Button>
+        <Button onClick={() => submitAnswer("false")}>False</Button>
       </ButtonsWrapper>
     </QuestionWrapper>
   );

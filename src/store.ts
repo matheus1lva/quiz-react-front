@@ -1,8 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import ScoreSlice from "./reducers/ScoreSlice";
+import QuestionsSlice from "./reducers/QuestionsSlice";
 
-export default configureStore({
-  reducer: {
-    score: ScoreSlice,
-  },
+const rootReducer = combineReducers({
+  score: ScoreSlice,
+  questions: QuestionsSlice,
 });
+
+const store = configureStore({
+  reducer: rootReducer,
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+export default store;

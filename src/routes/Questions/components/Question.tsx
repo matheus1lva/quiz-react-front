@@ -3,13 +3,21 @@ import styled from "styled-components";
 import { decode } from "html-entities";
 
 const QuestionBlock = styled.div`
-  border: 1px solid red;
+  border: 1px solid #2f3c47;
   padding: 50px;
+  font-size: 25px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const QuestionTitle = styled.h1`
   font-size: 25px;
 `;
 
 const Body = styled.div`
-  width: 400px;
+  width: 570px;
 `;
 
 export interface QuestionProps {
@@ -21,10 +29,11 @@ export interface QuestionProps {
 }
 
 export function Question(props: QuestionProps) {
-  const { category, question } = props;
+  const { question } = props;
+  const category = props?.category?.replace(/:/g, " -");
   return (
     <Body>
-      <h1>Category: {category}</h1>
+      <QuestionTitle>Category: {category}</QuestionTitle>
       <QuestionBlock>{decode(question)}</QuestionBlock>
     </Body>
   );
